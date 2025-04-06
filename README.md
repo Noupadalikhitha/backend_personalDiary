@@ -9,21 +9,20 @@ A Django REST Framework backend for the Personal Diary project, providing API en
 - CSRF protection
 - CORS support
 - Session-based authentication
-- PostgreSQL database support
+- SQLite database support
 
 ## Tech Stack
 
 - Python 3.8+
 - Django 4.2
 - Django REST Framework
-- PostgreSQL
+- SQLite
 - Gunicorn (for production)
 - Nginx (for production)
 
 ## Prerequisites
 
 - Python 3.8 or higher
-- PostgreSQL
 - pip
 
 ## Installation
@@ -50,11 +49,6 @@ pip install -r requirements.txt
 DJANGO_SECRET_KEY=your-secret-key-here
 DJANGO_DEBUG=False
 DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
-DB_NAME=diary
-DB_USER=diary
-DB_PASSWORD=your-db-password
-DB_HOST=localhost
-DB_PORT=5432
 CORS_ALLOWED_ORIGINS=http://localhost:5173
 CSRF_TRUSTED_ORIGINS=http://localhost:5173
 ```
@@ -113,17 +107,36 @@ backend/
 
 For production deployment:
 
-1. Set up PostgreSQL database
-2. Configure environment variables
-3. Install Gunicorn and Nginx
-4. Collect static files:
+1. Configure environment variables
+2. Install Gunicorn and Nginx
+3. Collect static files:
 ```bash
 python manage.py collectstatic
 ```
-5. Run with Gunicorn:
+4. Run with Gunicorn:
 ```bash
 gunicorn backend.wsgi:application
 ```
+
+### Important Notes for SQLite Deployment
+
+1. **Database Location**: 
+   - The SQLite database file (`db.sqlite3`) will be created in your project root directory
+   - Make sure the directory has proper write permissions
+   - Consider backing up the database file regularly
+
+2. **Performance**:
+   - SQLite is suitable for small to medium-sized applications
+   - For high-traffic applications, consider migrating to PostgreSQL
+
+3. **Concurrency**:
+   - SQLite supports multiple concurrent readers
+   - Only one writer can access the database at a time
+   - This is usually sufficient for personal diary applications
+
+4. **Backup**:
+   - Regularly backup your `db.sqlite3` file
+   - Consider implementing automated backup solutions
 
 ## Contributing
 
